@@ -98,30 +98,71 @@ class Student:
             return 'Ошибка'
 
 
-# Тестирование Задания №2
+def average_hw_grade(students_list, course_name):
+    total = 0
+    count = 0
+    for student in students_list:
+        if course_name in student.grades:
+            total += sum(student.grades[course_name])
+            count += len(student.grades[course_name])
+    return round(total / count, 2) if count else 0
+
+
+def average_lecture_grade(lecturers_list, course_name):
+    total = 0
+    count = 0
+    for lecturer in lecturers_list:
+        if course_name in lecturer.grades:
+            total += sum(lecturer.grades[course_name])
+            count += len(lecturer.grades[course_name])
+    return round(total / count, 2) if count else 0
+
+
 if __name__ == "__main__":
-    lecturer = Lecturer('Иван', 'Иванов')
-    reviewer = Reviewer('Пётр', 'Петров')
-    student = Student('Ольга', 'Алёхина', 'Ж')
+    # 1. Создаём по 2 экземпляра каждого класса
+    stu1 = Student('Иван', 'Иванов', 'м')
+    stu2 = Student('Мария', 'Петрова', 'ж')
+    lec1 = Lecturer('Алексей', 'Сидоров')
+    lec2 = Lecturer('Елена', 'Кузнецова')
+    rev1 = Reviewer('Дмитрий', 'Волков')
+    rev2 = Reviewer('Ольга', 'Смирнова')
 
-    student.courses_in_progress += ['Python', 'Java']
-    lecturer.courses_attached += ['Python', 'C++']
-    reviewer.courses_attached += ['Python', 'C++']
-    print("\n=== Тест Задания 2 ===")
-    print(student.rate_lecture(lecturer, 'Python', 7))  # None
-    print(student.rate_lecture(lecturer, 'Java', 8))  # Ошибка
-    print(student.rate_lecture(lecturer, 'С++', 8))  # Ошибка
-    print(student.rate_lecture(reviewer, 'Python', 6))  # Ошибка
+    # Настраиваем курсы
+    for s in [stu1, stu2]:
+        s.courses_in_progress = ['Python', 'Git']
+        s.finished_courses = ['Введение в программирование']
+    for l in [lec1, lec2]:
+        l.courses_attached = ['Python']
+    for r in [rev1, rev2]:
+        r.courses_attached = ['Python']
 
-    print(lecturer.grades)  # {'Python': [7]}
+    # 2. Вызываем методы выставления оценок
+    rev1.rate_hw(stu1, 'Python', 9)
+    rev1.rate_hw(stu1, 'Python', 10)
+    rev2.rate_hw(stu2, 'Python', 8)
+    rev2.rate_hw(stu2, 'Python', 9)
 
-    print("\n=== Тест Задания 3 ===")
-    print(reviewer)
-    print(lecturer)
-    print(student)
+    stu1.rate_lecture(lec1, 'Python', 9)
+    stu2.rate_lecture(lec1, 'Python', 10)
+    stu1.rate_lecture(lec2, 'Python', 8)
+    stu2.rate_lecture(lec2, 'Python', 9)
 
-    # Проверка сравнения
-    lecturer2 = Lecturer('Мария', 'Смирнова')
-    lecturer2.courses_attached += ['Python']
-    student.rate_lecture(lecturer2, 'Python', 8)
-    print(f"\nСравнение лекторов: {lecturer > lecturer2}")  # True или False в зависимости от оценок
+    # 3. Вызываем магические методы (__str__ через print, сравнение через операторы)
+    print("=== Студенты (__str__) ===")
+    print(stu1)
+    print(stu2)
+    print("\n=== Лекторы (__str__) ===")
+    print(lec1)
+    print(lec2)
+    print("\n=== Ревьюеры (__str__) ===")
+    print(rev1)
+    print(rev2)
+
+    print("\n=== Сравнение (__eq__, __lt__) ===")
+    print(f"lec1 == lec2: {lec1 == lec2}")
+    print(f"stu1 > stu2: {stu1 > stu2}")
+
+    # 4. Вызываем новые функции
+    print("\n=== Полевые испытания (функции) ===")
+    print(f"Средняя оценка за ДЗ по Python: {average_hw_grade([stu1, stu2], 'Python')}")
+    print(f"Средняя оценка за лекции по Python: {average_lecture_grade([lec1, lec2], 'Python')}")
