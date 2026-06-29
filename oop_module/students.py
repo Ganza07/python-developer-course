@@ -166,3 +166,12 @@ if __name__ == "__main__":
     print("\n=== Полевые испытания (функции) ===")
     print(f"Средняя оценка за ДЗ по Python: {average_hw_grade([stu1, stu2], 'Python')}")
     print(f"Средняя оценка за лекции по Python: {average_lecture_grade([lec1, lec2], 'Python')}")
+
+    # 5. Доработка - демонстрация отказов
+    print("\n=== Тестирование отказов (Вывод: 'Ошибка') ===")
+
+    # Отказ по роли: Студент пытается оценить ревьюера (а должен лектора)
+    print(f"stu1.rate_lecture(rev1, 'Python', 5): {stu1.rate_lecture(rev1, 'Python', 5)}")
+
+    # Отказ по курсу: Лектор не ведет 'Java'
+    print(f"stu1.rate_lecture(lec1, 'Java', 8): {stu1.rate_lecture(lec1, 'Java', 8)}")
